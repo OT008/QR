@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F7F8FC">
+  <meta name="description" content="Bağlantı, metin, kişi kartı veya Wi-Fi bilgilerinizden ücretsiz QR kod oluşturun. PNG ve SVG olarak indirin. Verileriniz tarayıcınızda kalır.">
+  <title>QR — Bir tarama kadar yakın.</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./vendor/qrcode.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="3" y="15" width="6" height="6" rx="1"/><path d="M15 15h3v3h3m-6 3h3m3-9v3"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="m10 13 4-4m-6 7-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0m2 1 1-1a4 4 0 0 1 6 6l-4 4a4 4 0 0 1-6 0" transform="translate(1 0)"/></symbol>
+    <symbol id="i-text" viewBox="0 0 24 24"><path d="M4 6h16M12 6v14M8 20h8M4 6v3m16-3v3"/></symbol>
+    <symbol id="i-contact" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M6 16v-1a3 3 0 0 1 6 0v1m3-7h3m-3 4h3m-3 4h3"/></symbol>
+    <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M3 8a15 15 0 0 1 18 0M6 12a10 10 0 0 1 12 0m-9 4a5 5 0 0 1 6 0"/><circle cx="12" cy="20" r=".7"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6Z"/><path d="m8 12 3 3 5-6"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+  </defs></svg>
+  <header class="site-header wrapper">
+    <a class="brand" href="./" aria-label="QR ana sayfa"><span class="brand-mark"><svg><use href="#i-qr"/></svg></span>QR<span class="brand-dot">.</span></a>
+    <span class="header-note"><span class="status-dot"></span>Ücretsiz. Sınırsız. Sadece QR.</span>
+  </header>
+  <main class="wrapper">
+    <section class="intro">
+      <span class="eyebrow">KÜÇÜK BİR KOD, BİR SÜRÜ OLASILIK</span>
+      <h1>Bir tarama kadar <span>yakın.</span></h1>
+      <p>Bağlantını, yazını, kişi kartını ya da Wi-Fi ağını paylaş.<br class="mobile-break"> QR kodunu saniyeler içinde oluştur.</p>
+    </section>
+    <div class="workspace">
+      <section class="editor card" aria-labelledby="editor-title">
+        <div class="section-heading"><span class="step">01</span><h2 id="editor-title">İçeriğini ekle</h2><button class="reset" id="reset" type="button">Temizle</button></div>
+        <div class="type-picker" role="group" aria-label="QR içerik türü">
+          <button type="button" class="type-button active" data-type="url" aria-pressed="true"><svg><use href="#i-link"/></svg>Bağlantı</button>
+          <button type="button" class="type-button" data-type="text" aria-pressed="false"><svg><use href="#i-text"/></svg>Metin</button>
+          <button type="button" class="type-button" data-type="contact" aria-pressed="false"><svg><use href="#i-contact"/></svg>Kişi</button>
+          <button type="button" class="type-button" data-type="wifi" aria-pressed="false"><svg><use href="#i-wifi"/></svg>Wi-Fi</button>
+        </div>
+        <div class="input-panel" id="panel-url">
+          <label for="url">Web sitesi adresi</label>
+          <input id="url" type="text" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://ornek.com" aria-describedby="url-help error" maxlength="2000">
+          <p class="field-help" id="url-help">Bir web sitesi, sosyal medya profili veya herhangi bir bağlantı.</p>
+        </div>
+        <div class="input-panel" id="panel-text" hidden>
+          <div class="label-row"><label for="text">Paylaşmak istediğin metin</label><span id="char-count">0 karakter</span></div>
+          <textarea id="text" rows="4" placeholder="Bir not, bir fikir, bir merhaba…" maxlength="2000" aria-describedby="error"></textarea>
+          <p class="field-help">Türkçe karakterler ve emojiler de dahil.</p>
+        </div>
+        <div class="input-panel" id="panel-contact" hidden>
+          <p class="contact-intro">Bir taramayla rehbere eklen.<br><span>Ad veya soyad gerekli; diğer alanlar isteğe bağlı.</span></p>
+          <div class="contact-grid">
+            <div><label for="contact-first">Ad</label><input id="contact-first" type="text" autocomplete="given-name" placeholder="Adın" maxlength="100" aria-describedby="error"></div>
+            <div><label for="contact-last">Soyad</label><input id="contact-last" type="text" autocomplete="family-name" placeholder="Soyadın" maxlength="100" aria-describedby="error"></div>
+            <div><label for="contact-phone">Telefon</label><input id="contact-phone" type="tel" autocomplete="tel" placeholder="+90 5xx xxx xx xx" maxlength="40" aria-describedby="contact-phone-help error"></div>
+            <div><label for="contact-email">E-posta</label><input id="contact-email" type="email" autocomplete="email" placeholder="ad@ornek.com" maxlength="254" aria-describedby="error"></div>
+            <div><label for="contact-org">Şirket / kurum</label><input id="contact-org" type="text" autocomplete="organization" placeholder="Şirket adı" maxlength="150" aria-describedby="error"></div>
+            <div><label for="contact-title">Ünvan</label><input id="contact-title" type="text" autocomplete="organization-title" placeholder="Görevin" maxlength="100" aria-describedby="error"></div>
+            <div class="contact-wide"><label for="contact-url">Web sitesi</label><input id="contact-url" type="text" inputmode="url" autocomplete="url" placeholder="https://ornek.com" maxlength="500" aria-describedby="error"></div>
+          </div>
+          <p class="field-help" id="contact-phone-help">Telefon numaranı ülke koduyla yaz: Türkiye için +90.</p>
+          <p class="field-help">QR'ı tara → Kişi ekle → Kaydet. Menü adları ve kamera desteği telefona göre değişebilir.</p>
+        </div>
+        <div class="input-panel" id="panel-wifi" hidden>
+          <label for="ssid">Ağ adı (SSID)</label><input id="ssid" type="text" placeholder="Wi-Fi ağının adı" autocomplete="off" maxlength="100" aria-describedby="error">
+          <div class="wifi-row"><div><label for="security">Güvenlik</label><select id="security"><option value="WPA">WPA / WPA2 / WPA3</option><option value="WEP">WEP</option><option value="nopass">Şifresiz ağ</option></select></div><div><label for="password">Şifre</label><input id="password" type="password" autocomplete="off" placeholder="Ağ şifresi" maxlength="200" aria-describedby="error"></div></div>
+          <label class="checkbox-label"><input id="hidden-network" type="checkbox">Gizli ağ</label>
+          <p class="field-help">QR kodu tarayan kişiler ağa katılabilir. Kod, ağ şifreni içerir.</p>
+        </div>
+        <p class="error" id="error" role="status" aria-live="polite"></p>
+        <div class="customize">
+          <div class="section-heading"><span class="step">02</span><h2>Sana göre olsun</h2></div>
+          <div class="options-row">
+            <fieldset class="color-options"><legend>Kod rengi</legend><div class="swatches">
+              <button type="button" class="swatch selected" style="--swatch:#25283a" data-color="#25283a" aria-label="Koyu gri" aria-pressed="true"></button>
+              <button type="button" class="swatch" style="--swatch:#6f6aaa" data-color="#6f6aaa" aria-label="Mor" aria-pressed="false"></button>
+              <button type="button" class="swatch" style="--swatch:#315f86" data-color="#315f86" aria-label="Mavi" aria-pressed="false"></button>
+              <button type="button" class="swatch" style="--swatch:#316a53" data-color="#316a53" aria-label="Yeşil" aria-pressed="false"></button>
+            </div></fieldset>
+            <div class="size-option"><label for="size">PNG boyutu</label><select id="size"><option value="512">512 × 512 px</option><option value="1024" selected>1024 × 1024 px</option><option value="2048">2048 × 2048 px</option></select></div>
+          </div>
+        </div>
+        <div class="privacy"><svg><use href="#i-shield"/></svg><p><strong>İçeriğin sana özel kalır.</strong><br>QR kodun tarayıcında oluşturulur. Girdiğin bilgiler bir sunucuya gönderilmez.</p></div>
+      </section>
+      <section class="preview card" aria-labelledby="preview-title">
+        <div class="preview-heading"><h2 id="preview-title">QR kodun</h2><span class="live-badge"><span class="status-dot"></span>Canlı önizleme</span></div>
+        <div class="qr-stage"><div class="qr-paper" id="qr-image" role="img" aria-label="QR önizlemesi"><div class="empty-state"><svg><use href="#i-qr"/></svg><span>İlk adım, bir içerik.</span><small>Kodun burada görünecek.</small></div></div></div>
+        <p class="preview-status" id="preview-status" role="status" aria-live="polite">Oluşturmak için soldan içeriğini ekle.</p>
+        <div class="downloads"><button type="button" class="button-primary" id="download-png" disabled><svg><use href="#i-download"/></svg>PNG indir<svg class="button-arrow"><use href="#i-arrow"/></svg></button><button type="button" class="button-secondary" id="download-svg" disabled>SVG indir <span>Vektörel, her boyutta net</span></button></div>
+        <button type="button" class="contact-download" id="download-vcf" hidden disabled>Kişi kartını indir (.vcf)</button>
+        <p class="scan-note" id="scan-note">Hazır olduğunda telefonunun kamerasıyla dene.</p>
+      </section>
+    </div>
+    <div class="benefits" aria-label="Özellikler"><span><b>✓</b> Üyelik gerektirmez</span><span><b>✓</b> Oluşturulan kodun süresi dolmaz</span><span><b>✓</b> Yüksek çözünürlüklü indirme</span></div>
+    <noscript><p class="noscript">QR kod oluşturmak için tarayıcında JavaScript'i etkinleştir.</p></noscript>
+  </main>
+  <footer class="wrapper"><span>Az işlem. Çok paylaşım.</span><span>Sevgiyle, kare kare. <svg><use href="#i-qr"/></svg></span></footer>
+</body>
+</html>
