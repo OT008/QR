@@ -195,8 +195,6 @@
     $('password').disabled = $('security').value === 'nopass';
     $('country-prefix').textContent = countryCode() || 'Diğer';
     $('download-vcf').hidden = type !== 'contact';
-    $('scan-note').hidden = type !== 'contact';
-    $('scan-note').textContent = type === 'contact' ? 'Tara → Kişilere ekle → Kaydet' : '';
     document.querySelector('.workspace').classList.toggle('contact-mode', type === 'contact');
     for (const id of fields) $(id).removeAttribute('aria-invalid');
     try {
