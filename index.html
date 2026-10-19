@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F7F8FC">
+  <meta name="description" content="Bağlantı, metin, kişi kartı veya Wi-Fi bilgilerinizden ücretsiz QR kod oluşturun. PNG ve SVG olarak indirin. Verileriniz tarayıcınızda kalır.">
+  <title>QR Oluştur</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./vendor/qrcode.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="3" y="15" width="6" height="6" rx="1"/><path d="M15 15h3v3h3m-6 3h3m3-9v3"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="m10 13 4-4m-6 7-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0m2 1 1-1a4 4 0 0 1 6 6l-4 4a4 4 0 0 1-6 0" transform="translate(1 0)"/></symbol>
+    <symbol id="i-text" viewBox="0 0 24 24"><path d="M4 6h16M12 6v14M8 20h8M4 6v3m16-3v3"/></symbol>
+    <symbol id="i-contact" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M6 16v-1a3 3 0 0 1 6 0v1m3-7h3m-3 4h3m-3 4h3"/></symbol>
+    <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M3 8a15 15 0 0 1 18 0M6 12a10 10 0 0 1 12 0m-9 4a5 5 0 0 1 6 0"/><circle cx="12" cy="20" r=".7"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6Z"/><path d="m8 12 3 3 5-6"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+  </defs></svg>
+  <header class="site-header wrapper">
+    <a class="brand" href="./" aria-label="QR ana sayfa"><span class="brand-mark"><svg><use href="#i-qr"/></svg></span>QR<span class="brand-dot">.</span></a>
+  </header>
+  <main class="wrapper">
+    <section class="intro">
+      <h1>QR oluştur</h1>
+    </section>
+    <div class="workspace">
+      <section class="editor card" aria-labelledby="editor-title">
+        <div class="section-heading"><h2 id="editor-title">İçerik</h2><button class="reset" id="reset" type="button">Temizle</button></div>
+        <div class="type-picker" role="group" aria-label="QR içerik türü">
+          <button type="button" class="type-button active" data-type="url" aria-pressed="true"><svg><use href="#i-link"/></svg>Bağlantı</button>
+          <button type="button" class="type-button" data-type="text" aria-pressed="false"><svg><use href="#i-text"/></svg>Metin</button>
+          <button type="button" class="type-button" data-type="contact" aria-pressed="false"><svg><use href="#i-contact"/></svg>Kişi</button>
+          <button type="button" class="type-button" data-type="wifi" aria-pressed="false"><svg><use href="#i-wifi"/></svg>Wi-Fi</button>
+        </div>
+        <div class="input-panel" id="panel-url">
+          <label for="url">Web sitesi adresi</label>
+          <input id="url" type="text" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://ornek.com" aria-describedby="error" maxlength="2000">
+        </div>
+        <div class="input-panel" id="panel-text" hidden>
+          <div class="label-row"><label for="text">Metin</label><span id="char-count">0 karakter</span></div>
+          <textarea id="text" rows="4" placeholder="Metnini yaz" maxlength="2000" aria-describedby="error"></textarea>
+        </div>
+        <div class="input-panel" id="panel-contact" hidden>
+          <div class="contact-grid">
+            <div><label for="contact-first">Ad <span class="required-mark" aria-hidden="true">*</span></label><input id="contact-first" type="text" autocomplete="given-name" placeholder="Adın" maxlength="100" required aria-describedby="error"></div>
+            <div><label for="contact-last">Soyad <span class="required-mark" aria-hidden="true">*</span></label><input id="contact-last" type="text" autocomplete="family-name" placeholder="Soyadın" maxlength="100" required aria-describedby="error"></div>
+            <div class="contact-wide"><label for="contact-phone">Telefon <span class="required-mark" aria-hidden="true">*</span></label><div class="phone-row">
+              <div class="country-select"><span id="country-prefix" aria-hidden="true">+90</span><select id="contact-country" autocomplete="tel-country-code" aria-label="Telefon ülke kodu" aria-describedby="error">
+                <option value="+90" selected>Türkiye (+90)</option>
+                <option value="+1">ABD / Kanada (+1)</option>
+                <option value="+49">Almanya (+49)</option>
+                <option value="+355">Arnavutluk (+355)</option>
+                <option value="+61">Avustralya (+61)</option>
+                <option value="+43">Avusturya (+43)</option>
+                <option value="+994">Azerbaycan (+994)</option>
+                <option value="+32">Belçika (+32)</option>
+                <option value="+971">Birleşik Arap Emirlikleri (+971)</option>
+                <option value="+44">Birleşik Krallık (+44)</option>
+                <option value="+387">Bosna-Hersek (+387)</option>
+                <option value="+55">Brezilya (+55)</option>
+                <option value="+359">Bulgaristan (+359)</option>
+                <option value="+86">Çin (+86)</option>
+                <option value="+45">Danimarka (+45)</option>
+                <option value="+358">Finlandiya (+358)</option>
+                <option value="+33">Fransa (+33)</option>
+                <option value="+995">Gürcistan (+995)</option>
+                <option value="+82">Güney Kore (+82)</option>
+                <option value="+91">Hindistan (+91)</option>
+                <option value="+31">Hollanda (+31)</option>
+                <option value="+964">Irak (+964)</option>
+                <option value="+98">İran (+98)</option>
+                <option value="+353">İrlanda (+353)</option>
+                <option value="+34">İspanya (+34)</option>
+                <option value="+46">İsveç (+46)</option>
+                <option value="+41">İsviçre (+41)</option>
+                <option value="+39">İtalya (+39)</option>
+                <option value="+81">Japonya (+81)</option>
+                <option value="+974">Katar (+974)</option>
+                <option value="+383">Kosova (+383)</option>
+                <option value="+389">Kuzey Makedonya (+389)</option>
+                <option value="+20">Mısır (+20)</option>
+                <option value="+47">Norveç (+47)</option>
+                <option value="+48">Polonya (+48)</option>
+                <option value="+351">Portekiz (+351)</option>
+                <option value="+40">Romanya (+40)</option>
+                <option value="+7">Rusya / Kazakistan (+7)</option>
+                <option value="+381">Sırbistan (+381)</option>
+                <option value="+966">Suudi Arabistan (+966)</option>
+                <option value="+380">Ukrayna (+380)</option>
+                <option value="+30">Yunanistan (+30)</option>
+                <option value="other">Diğer ülke kodu</option>
+              </select></div>
+              <input id="contact-phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="532 123 45 67" maxlength="32" required aria-describedby="error">
+            </div><div id="custom-country" hidden><label for="contact-dial-code">Ülke kodu</label><input id="contact-dial-code" type="tel" inputmode="tel" placeholder="+212" maxlength="4" aria-describedby="error"></div></div>
+            <div><label for="contact-email">E-posta</label><input id="contact-email" type="email" autocomplete="email" placeholder="ad@ornek.com" maxlength="254" aria-describedby="error"></div>
+            <div><label for="contact-url">Web sitesi</label><input id="contact-url" type="text" inputmode="url" autocomplete="url" placeholder="https://ornek.com" maxlength="500" aria-describedby="error"></div>
+            <div><label for="contact-org">Şirket / kurum</label><input id="contact-org" type="text" autocomplete="organization" placeholder="Şirket adı" maxlength="150" aria-describedby="error"></div>
+            <div><label for="contact-title">Ünvan</label><input id="contact-title" type="text" autocomplete="organization-title" placeholder="Görevin" maxlength="100" aria-describedby="error"></div>
+          </div>
+        </div>
+        <div class="input-panel" id="panel-wifi" hidden>
+          <label for="ssid">Ağ adı (SSID)</label><input id="ssid" type="text" placeholder="Wi-Fi ağının adı" autocomplete="off" maxlength="100" aria-describedby="error">
+          <div class="wifi-row"><div><label for="security">Güvenlik</label><select id="security"><option value="WPA">WPA / WPA2 / WPA3</option><option value="WEP">WEP</option><option value="nopass">Şifresiz ağ</option></select></div><div><label for="password">Şifre</label><input id="password" type="password" autocomplete="off" placeholder="Ağ şifresi" maxlength="200" aria-describedby="error"></div></div>
+          <label class="checkbox-label"><input id="hidden-network" type="checkbox">Gizli ağ</label>
+          <p class="field-help">Bu QR kod ağ şifreni içerir.</p>
+        </div>
+        <p class="error" id="error" role="status" aria-live="polite"></p>
+        <div class="customize">
+          <label for="color-hex">Kod rengi</label>
+          <div class="color-controls">
+            <input id="color-picker" type="color" value="#000000" aria-label="Renk seç">
+            <input id="color-hex" type="text" value="#000000" placeholder="#000000" maxlength="7" spellcheck="false" autocomplete="off" aria-label="HEX renk kodu" aria-describedby="color-feedback">
+            <button id="color-black" type="button">Siyah</button>
+          </div>
+          <p id="color-feedback" class="field-help" role="status" aria-live="polite"></p>
+        </div>
+      </section>
+      <section class="preview card" aria-labelledby="preview-title">
+        <div class="preview-heading"><h2 id="preview-title">Önizleme</h2></div>
+        <div class="qr-stage"><div class="qr-paper" id="qr-image" role="img" aria-label="QR önizlemesi"><div class="empty-state"><svg><use href="#i-qr"/></svg></div></div></div>
+        <p class="preview-status" id="preview-status" role="status" aria-live="polite">İçerik girerek başla.</p>
+        <div class="downloads"><button type="button" class="button-primary" id="download-png" disabled><svg><use href="#i-download"/></svg>PNG indir</button><button type="button" class="button-secondary" id="download-svg" disabled>SVG indir</button></div>
+        <button type="button" class="contact-download" id="download-vcf" hidden disabled>Kişi kartını indir (.vcf)</button>
+        <p class="scan-note" id="scan-note" hidden></p>
+      </section>
+    </div>
+    <noscript><p class="noscript">QR kod oluşturmak için tarayıcında JavaScript'i etkinleştir.</p></noscript>
+  </main>
+  <dialog id="download-dialog" aria-labelledby="download-title">
+    <form id="download-form">
+      <h2 id="download-title">PNG indir</h2>
+      <label for="size">Boyut</label>
+      <select id="size" autofocus><option value="512">512 × 512 px</option><option value="1024" selected>1024 × 1024 px</option><option value="2048">2048 × 2048 px</option></select>
+      <p id="export-note" class="field-help" hidden>SVG her boyutta net kalır.</p>
+      <div class="dialog-actions"><button id="download-cancel" type="button" class="button-secondary">Vazgeç</button><button id="download-confirm" type="submit" class="button-primary">İndir</button></div>
+    </form>
+  </dialog>
+  <footer class="wrapper"><p>Bu site yalnızca QR kod oluşturma aracıdır. Oluşturulan kodların içeriği ve kullanımından kullanıcılar sorumludur; site sahibinin bu içeriklerle bir bağlantısı yoktur.</p></footer>
+</body>
+</html>
